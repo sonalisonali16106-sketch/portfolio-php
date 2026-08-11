@@ -120,11 +120,11 @@
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", function () {
 
     // Good Morning / Afternoon / Evening
     function showGreeting() {
         const hour = new Date().getHours();
-
         let greeting;
 
         if (hour < 12) {
@@ -135,53 +135,64 @@
             greeting = "Good Evening";
         }
 
-        document.getElementById("greeting").textContent = greeting;
+        const greetingElement = document.getElementById("greeting");
+        if (greetingElement) {
+            greetingElement.textContent = greeting;
+        }
     }
-
-    showGreeting();
-
 
     // Typing animation
     const txt = "Sonali V";
     let i = 0;
 
     function typing() {
-        if (i <= txt.length) {
-            document.getElementById("type").textContent =
-                txt.slice(0, i);
+        const typeElement = document.getElementById("type");
 
+        if (typeElement && i <= txt.length) {
+            typeElement.textContent = txt.slice(0, i);
             i++;
             setTimeout(typing, 120);
         }
     }
 
-    typing();
-
-
     // Live clock
     function updateClock() {
         const now = new Date();
+        const clockElement = document.getElementById("clock");
 
-        document.getElementById("clock").textContent =
-            now.toLocaleString("en-IN", {
+        if (clockElement) {
+            clockElement.textContent = now.toLocaleString("en-IN", {
                 timeZone: "Asia/Kolkata"
             });
+        }
     }
-
-    updateClock();
-
-    setInterval(updateClock, 1000);
-
 
     // Dark mode
-    function toggleDarkMode() {
+    window.toggleDarkMode = function () {
         document.body.classList.toggle("dark");
-    }
-
+    };
 
     // Change background
     const backgrounds = [
         "linear-gradient(135deg,#0f4c81,#7ec8ff)",
         "linear-gradient(135deg,#6a11cb,#2575fc)",
         "linear-gradient(135deg,#11998e,#38ef7d)"
-    ]
+    ];
+
+    let backgroundIndex = 0;
+
+    window.changeBackground = function () {
+        backgroundIndex =
+            (backgroundIndex + 1) % backgrounds.length;
+
+        document.body.style.background =
+            backgrounds[backgroundIndex];
+    };
+
+    showGreeting();
+    typing();
+    updateClock();
+
+    setInterval(updateClock, 1000);
+});
+</script>
